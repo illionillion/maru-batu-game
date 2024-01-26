@@ -26,10 +26,12 @@ const App: FC = () => {
     if (arr.map(r => r.every(c => c === 1)).some((v) => v === true)) {
       console.log("1の勝ち");
       setResult(1)
+      return
     }
     if (arr.map(r => r.every(c => c === -1)).some((v) => v === true)) {
       console.log("-1の勝ち");
       setResult(2)
+      return
     }
 
     // 縦判定
@@ -37,10 +39,12 @@ const App: FC = () => {
       if (arr.map((r) => r[i]).every(v => v === 1)) {
         console.log("1の勝ち");
         setResult(1)
+        return
       }
       if (arr.map((r) => r[i]).every(v => v === -1)) {
         console.log("-1の勝ち");
         setResult(2)
+        return
       }
     }
 
@@ -48,25 +52,31 @@ const App: FC = () => {
     if (arr.map((r, i) => r[i]).every(v => v === 1)) {
       console.log("1の勝ち");
       setResult(1)
+      return
     }
     if (arr.map((r, i) => r[i]).every(v => v === -1)) {
       console.log("-1の勝ち");
       setResult(2)
+      return
     }
 
     // 斜めの判定（反対）
     if (arr.map((r, i) => r[r.length - 1 - i]).every(v => v === 1)) {
       console.log("1の勝ち");
       setResult(1)
+      return
     }
     if (arr.map((r, i) => r[r.length - 1 - i]).every(v => v === -1)) {
       console.log("-1の勝ち");
       setResult(2)
+      return
     }
 
+    // 引き分けの判定
     if (arr.map((e) => e.every(v => v !== 0)).every(v => v === true)) {
       console.log("引き分け");
       setResult(3)
+      return
     }
   }
 
