@@ -1,8 +1,6 @@
-import { Box, Button, Center, Icon, NativeTable, Tbody, Td, Text, Tr } from "@yamada-ui/react"
+import { Box, Button, Center, NativeTable, Tbody, Text, Tr } from "@yamada-ui/react"
 import { FC, useEffect, useState } from "react"
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { FaRegCircle } from "react-icons/fa";
-import { ImCross } from "react-icons/im";
+import { Cell } from "./components/Cell";
 
 const defaultArr: number[][] = new Array(3).fill(new Array(3).fill(0))
 /**
@@ -96,24 +94,7 @@ const App: FC = () => {
       <NativeTable w="calc(100vw * 0.25)" h="calc(100vw * 0.25)" withBorder withColumnBorders>
         <Tbody>
           {arr.map((r, i) => <Tr key={i}>
-            {r.map((c, j) => <Td key={j} onClick={() => c === 0 ? handleClick(i, j) : undefined} w="33.33%" h="33.33%">{
-              (() => {
-                switch (c) {
-                  case 0:
-
-                    return <Icon w="full" h="full" as={AiOutlineQuestionCircle} />;
-                  case 1:
-
-                    return <Icon w="full" h="full" as={FaRegCircle} />;
-                  case -1:
-
-                    return <Icon w="full" h="full" as={ImCross} />;
-
-                  default:
-                    return ""
-                }
-              })()
-            }</Td>)}
+            {r.map((c, j) => <Cell {...{ c, i, j, handleClick, key: j }} />)}
           </Tr>)}
         </Tbody>
       </NativeTable>
