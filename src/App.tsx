@@ -1,4 +1,4 @@
-import { Center, Icon, NativeTable, Tbody, Td, Tr } from "@yamada-ui/react"
+import { Box, Button, Center, Icon, NativeTable, Tbody, Td, Text, Tr } from "@yamada-ui/react"
 import { FC, useEffect, useState } from "react"
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaRegCircle } from "react-icons/fa";
@@ -78,15 +78,25 @@ const App: FC = () => {
       setResult(3)
       return
     }
+
+    // 継続
+    setResult(0)
+  }
+
+  const reStart = () => {
+    setIsPlayer(false)
+    setResult(0)
+    setArr(defaultArr)
   }
 
   useEffect(winLoseCheck, [arr])
+
   return (
-    <Center w="100vw" h="100dvh">
+    <Center w="100vw" h="100dvh" flexDir="column">
       <NativeTable w="calc(100vw * 0.25)" h="calc(100vw * 0.25)" withBorder withColumnBorders>
         <Tbody>
           {arr.map((r, i) => <Tr key={i}>
-            {r.map((c, j) => <Td key={j} onClick={() => handleClick(i, j)} w="33.33%" h="33.33%">{
+            {r.map((c, j) => <Td key={j} onClick={() => {if(c === 0) handleClick(i, j)}} w="33.33%" h="33.33%">{
               (() => {
                 switch (c) {
                   case 0:
@@ -107,6 +117,28 @@ const App: FC = () => {
           </Tr>)}
         </Tbody>
       </NativeTable>
+      {result === 0 ?
+        <Text textAlign="center">{!isPlayer ? "あなたの番" : "あいての番"}</Text>
+        :
+        <Box>
+          <Text textAlign="center">
+            {(() => {
+              switch (result) {
+                case 1:
+
+                  return "あなたの勝ち";
+                case 2:
+
+                  return "あいての勝ち";
+
+                default:
+                  return "引き分け";
+              }
+            })()}
+          </Text>
+          <Button onClick={reStart}>もう一回</Button>
+        </Box>
+      }
     </Center>
   )
 }
