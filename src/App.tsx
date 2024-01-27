@@ -16,7 +16,7 @@ const App: FC = () => {
   const handleClick = (i: number, j: number) => {
     if (result !== 0) return
     setArr(newArr => newArr.map((r, ni) => ni === i ?
-      r.map((c, nj) => (nj === j && c === 0) ? !isPlayer ? 1 : -1 : c)
+      r.map((c, nj) => nj === j ? !isPlayer ? 1 : -1 : c)
       : r))
     setIsPlayer(!isPlayer)
   }
@@ -96,7 +96,7 @@ const App: FC = () => {
       <NativeTable w="calc(100vw * 0.25)" h="calc(100vw * 0.25)" withBorder withColumnBorders>
         <Tbody>
           {arr.map((r, i) => <Tr key={i}>
-            {r.map((c, j) => <Td key={j} onClick={() => {if(c === 0) handleClick(i, j)}} w="33.33%" h="33.33%">{
+            {r.map((c, j) => <Td key={j} onClick={() => c === 0 ? handleClick(i, j) : undefined} w="33.33%" h="33.33%">{
               (() => {
                 switch (c) {
                   case 0:
