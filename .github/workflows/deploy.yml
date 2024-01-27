@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # node_modules がキャッシュされていれば展開する
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      # node_modules がキャッシュされてなければ npm ci
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: npm install
+        run: npm ci
+
+      - name: build
+        run: |
+          npm run rebuild
+        env:
+          GITHUB_PAGES: true
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git add -N . # 新規ファイルを含める
+          if ! git diff --exit-code --quiet
+          then
+            git config user.name "${{ vars.GIT_USER_NAME }}" 
+            git config user.email "${{ vars.GIT_USER_EMAIL }}"
+            git add .
+            git commit -m "Update GitHub Pages"
+            git push
+          fi
