@@ -32,8 +32,6 @@ jobs:
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: node
         uses: actions/setup-node@v3
-        with:
-          node-version: '18'
 
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: npm install

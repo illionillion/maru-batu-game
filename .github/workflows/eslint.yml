@@ -22,9 +22,6 @@ jobs:
   eslint:
     name: Run eslint scanning
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20] # テストしたいNode.jsのバージョンを指定
     permissions:
       contents: read
       security-events: write
