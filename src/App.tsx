@@ -7,6 +7,7 @@ import {
   Tbody,
   Text,
   Tr,
+  useMediaQuery,
 } from '@yamada-ui/react';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -18,6 +19,8 @@ const defaultArr: number[][] = new Array(3).fill(new Array(3).fill(0));
  */
 type resultType = 0 | 1 | 2 | 3;
 const App: FC = () => {
+  const [flg1] = useMediaQuery('(min-width: 1000px)');
+  const [flg2] = useMediaQuery('(min-width: 500px)');
   const [arr, setArr] = useState<number[][]>(defaultArr);
   const [isPlayer, setIsPlayer] = useState<boolean>(false);
   const [result, setResult] = useState<resultType>(0);
@@ -107,8 +110,8 @@ const App: FC = () => {
       <NativeTable
         withBorder
         withColumnBorders
-        w='calc(100vw * 0.25)'
-        h='calc(100vw * 0.25)'
+        w={`calc(100vw * ${flg1 ? 0.25 : flg2 ? 0.5 : 0.75})`}
+        h={`calc(100vw * ${flg1 ? 0.25 : flg2 ? 0.5 : 0.75})`}
       >
         <Tbody>
           {arr.map((r, i) => (
