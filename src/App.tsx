@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Heading,
   NativeTable,
   Tbody,
   Text,
@@ -102,6 +103,7 @@ const App: FC = () => {
 
   return (
     <Center w='100vw' h='100dvh' flexDir='column'>
+      <Heading textAlign='center'>マルバツゲーム</Heading>
       <NativeTable
         withBorder
         withColumnBorders
