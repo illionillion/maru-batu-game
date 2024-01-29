@@ -29,9 +29,9 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
           case 0:
             return <Icon w='full' h='full' as={AiOutlineQuestionCircle} />;
           case 1:
-            return <Icon w='full' h='full' as={FaRegCircle} />;
+            return <Icon w='full' h='full' color='success' as={FaRegCircle} />;
           case -1:
-            return <Icon w='full' h='full' as={ImCross} />;
+            return <Icon w='full' h='full' color='danger' as={ImCross} />;
 
           default:
             return '';
