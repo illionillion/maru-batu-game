@@ -140,8 +140,8 @@ const App: FC = () => {
         })()}
       </Text>
       <HStack>
+        <Button onClick={toggleColorMode}>テーマ切り替え</Button>
         {result !== 0 && <Button onClick={reStart}>もう一回</Button>}
-        <Button onClick={toggleColorMode}>切り替え</Button>
       </HStack>
     </Center>
   );
