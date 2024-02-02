@@ -1,12 +1,13 @@
 import {
-  Box,
   Button,
   Center,
+  HStack,
   Heading,
   NativeTable,
   Tbody,
   Text,
   Tr,
+  useColorMode,
   useMediaQuery,
 } from '@yamada-ui/react';
 import type { FC } from 'react';
@@ -19,6 +20,7 @@ const defaultArr: number[][] = new Array(3).fill(new Array(3).fill(0));
  */
 type resultType = 0 | 1 | 2 | 3;
 const App: FC = () => {
+  const { toggleColorMode } = useColorMode();
   const [flg1] = useMediaQuery('(min-width: 1000px)');
   const [flg2] = useMediaQuery('(min-width: 500px)');
   const [arr, setArr] = useState<number[][]>(defaultArr);
@@ -105,7 +107,7 @@ const App: FC = () => {
   useEffect(winLoseCheck, [arr]);
 
   return (
-    <Center w='100vw' h='100dvh' flexDir='column'>
+    <Center w='100vw' h='100dvh' flexDir='column' gap={3}>
       <Heading textAlign='center'>マルバツゲーム</Heading>
       <NativeTable
         withBorder
@@ -123,28 +125,24 @@ const App: FC = () => {
           ))}
         </Tbody>
       </NativeTable>
-      {result === 0 ? (
-        <Text textAlign='center'>
-          {!isPlayer ? 'あなたの番' : 'あいての番'}
-        </Text>
-      ) : (
-        <Box>
-          <Text textAlign='center'>
-            {(() => {
-              switch (result) {
-                case 1:
-                  return 'あなたの勝ち';
-                case 2:
-                  return 'あいての勝ち';
-
-                default:
-                  return '引き分け';
-              }
-            })()}
-          </Text>
-          <Button onClick={reStart}>もう一回</Button>
-        </Box>
-      )}
+      <Text textAlign='center'>
+        {(() => {
+          switch (result) {
+            case 1:
+              return 'あなたの勝ち';
+            case 2:
+              return 'あいての勝ち';
+            case 3:
+              return '引き分け';
+            default:
+              return !isPlayer ? 'あなたの番' : 'あいての番';
+          }
+        })()}
+      </Text>
+      <HStack>
+        {result !== 0 && <Button onClick={reStart}>もう一回</Button>}
+        <Button onClick={toggleColorMode}>切り替え</Button>
+      </HStack>
     </Center>
   );
 };

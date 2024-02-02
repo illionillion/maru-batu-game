@@ -1,4 +1,4 @@
-import { Icon, Ripple, Td, useRipple } from '@yamada-ui/react';
+import { Icon, Ripple, Td, useColorMode, useRipple } from '@yamada-ui/react';
 import type { FC } from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { FaRegCircle } from 'react-icons/fa';
@@ -13,6 +13,7 @@ interface CellProps {
 
 export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
   const { onPointerDown, ...rippleProps } = useRipple();
+  const { colorMode } = useColorMode();
 
   return (
     <Td
@@ -29,9 +30,23 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
           case 0:
             return <Icon w='full' h='full' as={AiOutlineQuestionCircle} />;
           case 1:
-            return <Icon w='full' h='full' color='primary' as={FaRegCircle} />;
+            return (
+              <Icon
+                w='full'
+                h='full'
+                color={colorMode === 'light' ? 'primary' : 'success'}
+                as={FaRegCircle}
+              />
+            );
           case -1:
-            return <Icon w='full' h='full' color='danger' as={ImCross} />;
+            return (
+              <Icon
+                w='full'
+                h='full'
+                color={colorMode === 'light' ? 'danger' : 'warning'}
+                as={ImCross}
+              />
+            );
 
           default:
             return '';
