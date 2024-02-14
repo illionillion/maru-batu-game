@@ -1,12 +1,12 @@
 import {
   Button,
   Center,
-  HStack,
   Heading,
   NativeTable,
   Tbody,
   Text,
   Tr,
+  VStack,
   useColorMode,
   useMediaQuery,
 } from '@yamada-ui/react';
@@ -139,10 +139,10 @@ const App: FC = () => {
           }
         })()}
       </Text>
-      <HStack>
+      <VStack>
         <Button onClick={toggleColorMode}>テーマ切り替え</Button>
         {result !== 0 && <Button onClick={reStart}>もう一回</Button>}
-      </HStack>
+      </VStack>
     </Center>
   );
 };
