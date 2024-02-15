@@ -139,7 +139,7 @@ const App: FC = () => {
           }
         })()}
       </Text>
-      <VStack>
+      <VStack w={`calc(100vw * ${flg1 ? 0.25 : flg2 ? 0.5 : 0.75})`}>
         <Button onClick={toggleColorMode}>テーマ切り替え</Button>
         {result !== 0 && <Button onClick={reStart}>もう一回</Button>}
       </VStack>
