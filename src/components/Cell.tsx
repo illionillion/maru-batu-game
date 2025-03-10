@@ -39,7 +39,13 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
       position='relative'
       overflow='hidden'
       p={0}
-      vars={[{ name: 'clr', token: 'colors', value: 'primary' }]}
+      vars={[
+        {
+          name: 'clr',
+          token: 'colors',
+          value: colorMode !== 'light' ? 'primary' : 'success',
+        },
+      ]}
       _before={{
         content: "''",
         position: 'absolute',
