@@ -12,7 +12,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier .",
     "format:write": "prettier . --write",
-    "prepare": "husky"
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -34,16 +34,9 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-unused-imports": "^3.0.0",
     "git-hooks": "^1.1.10",
-    "husky": "^9.0.6",
-    "lint-staged": "^15.2.0",
+    "lefthook": "^1.11.16",
     "prettier": "^3.2.4",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint . --fix",
-      "prettier . --write"
-    ]
   }
 }
