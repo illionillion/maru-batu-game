@@ -38,10 +38,8 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      # node_modules がキャッシュされてなければ pnpm install
-      - if: ${{ steps.cache-pnpm.outputs.cache-hit != 'true' }}
-        name: pnpm install
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: build
         run: |
