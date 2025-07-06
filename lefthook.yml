@@ -1,7 +1,5 @@
 pre-commit:
   piped: true
-  skip:
-    - env: CI
   commands:
     prettier:
       priority: 1
@@ -14,7 +12,12 @@ pre-commit:
       priority: 2
       glob: "*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}"
       run: |
-        pnpm eslint "{staged_files}" --max-warnings=0 --fix --cache
+        echo "CI: $CI"
+        if [ "$CI" = "true" ]; then
+          pnpm eslint "{staged_files}" --max-warnings=0 --fix --cache --ignore-pattern "**/docs/**"
+        else
+          pnpm eslint "{staged_files}" --max-warnings=0 --fix --cache
+        fi
       stage_fixed: true
 
 commit-msg:
