@@ -12,6 +12,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES: true
 
     steps:
       - name: Checkout repository
