@@ -1,5 +1,5 @@
 import { Icon, Ripple, Td, useColorMode, useRipple } from '@yamada-ui/react';
-import type { FC, MouseEvent, TouchEvent } from 'react';
+import { memo, type FC, type MouseEvent, type TouchEvent } from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { FaRegCircle } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
@@ -11,7 +11,7 @@ interface CellProps {
   handleClick: (i: number, j: number) => void;
 }
 
-export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
+export const Cell: FC<CellProps> = memo(({ i, j, c, handleClick }) => {
   const { onPointerDown, ...rippleProps } = useRipple();
   const { colorMode } = useColorMode();
 
@@ -47,7 +47,7 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
         },
       ]}
       _before={{
-        content: "''",
+        content: '\'\'',
         position: 'absolute',
         top: 'var(--y)',
         left: 'var(--x)',
@@ -59,7 +59,7 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
         transition: '0.5s, top 0s, left 0s',
       }}
       _after={{
-        content: "''",
+        content: '\'\'',
         position: 'absolute',
         inset: '2px',
         background: colorMode === 'light' ? 'whiteAlpha.600' : 'blackAlpha.400',
@@ -119,4 +119,4 @@ export const Cell: FC<CellProps> = ({ i, j, c, handleClick }) => {
       <Ripple {...rippleProps} />
     </Td>
   );
-};
+});

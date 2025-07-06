@@ -2,17 +2,14 @@ import {
   Button,
   Center,
   Heading,
-  NativeTable,
-  Tbody,
   Text,
-  Tr,
   VStack,
   useColorMode,
   useMediaQuery,
 } from '@yamada-ui/react';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { Cell } from './components/Cell';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Table } from './components/Table';
 
 const defaultCells: number[][] = new Array(3).fill(new Array(3).fill(0));
 /**
@@ -26,15 +23,40 @@ const App: FC = () => {
   const [cells, setCells] = useState<number[][]>(defaultCells);
   const [isPlayer, setIsPlayer] = useState<boolean>(false);
   const [result, setResult] = useState<resultType>(0);
-  const handleClick = (i: number, j: number) => {
-    if (result !== 0) return;
-    setCells((newCells) =>
-      newCells.map((cell, index) =>
-        index === i ? cell.map((c, nj) => (nj === j ? (!isPlayer ? 1 : -1) : c)) : cell,
-      ),
-    );
-    setIsPlayer(!isPlayer);
-  };
+
+  // 最新の状態を追跡するためのref
+  const isPlayerRef = useRef<boolean>(false);
+  const resultRef = useRef<resultType>(0);
+
+  // refを最新の状態に同期
+  useEffect(() => {
+    isPlayerRef.current = isPlayer;
+  }, [isPlayer]);
+
+  useEffect(() => {
+    resultRef.current = result;
+  }, [result]);
+
+  const handleClick = useCallback((i: number, j: number) => {
+    // refを使って最新の状態をチェック
+    if (resultRef.current !== 0) return;
+
+    setCells((newCells) => {
+      // セルが既に埋まっている場合は何もしない
+      if (newCells[i][j] !== 0) return newCells;
+
+      const updatedCells = newCells.map((cell, index) =>
+        index === i
+          ? cell.map((c, nj) =>
+            nj === j ? (!isPlayerRef.current ? 1 : -1) : c,
+          )
+          : cell,
+      );
+      return updatedCells;
+    });
+
+    setIsPlayer(!isPlayerRef.current);
+  }, []);
 
   const winLoseCheck = () => {
     // 横判定
@@ -109,22 +131,12 @@ const App: FC = () => {
   return (
     <Center w='100vw' h='100dvh' flexDir='column' gap={3}>
       <Heading textAlign='center'>マルバツゲーム</Heading>
-      <NativeTable
-        withBorder
-        withColumnBorders
-        w={`calc(100vw * ${isLargeScreen ? 0.25 : isMediumScreen ? 0.5 : 0.75})`}
-        h={`calc(100vw * ${isLargeScreen ? 0.25 : isMediumScreen ? 0.5 : 0.75})`}
-      >
-        <Tbody>
-          {cells.map((r, i) => (
-            <Tr key={i}>
-              {r.map((c, j) => (
-                <Cell {...{ c, i, j, handleClick, key: j }} />
-              ))}
-            </Tr>
-          ))}
-        </Tbody>
-      </NativeTable>
+      <Table
+        cells={cells}
+        isLargeScreen={isLargeScreen}
+        isMediumScreen={isMediumScreen}
+        handleClick={handleClick}
+      />
       <Text textAlign='center'>
         {(() => {
           switch (result) {
@@ -139,7 +151,9 @@ const App: FC = () => {
           }
         })()}
       </Text>
-      <VStack w={`calc(100vw * ${isLargeScreen ? 0.25 : isMediumScreen ? 0.5 : 0.75})`}>
+      <VStack
+        w={`calc(100vw * ${isLargeScreen ? 0.25 : isMediumScreen ? 0.5 : 0.75})`}
+      >
         <Button onClick={toggleColorMode}>テーマ切り替え</Button>
         {result !== 0 && <Button onClick={reStart}>もう一回</Button>}
       </VStack>
