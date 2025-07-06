@@ -14,7 +14,11 @@ pre-commit:
       run: |
         echo "CI: $CI"
         if [ "$CI" = "true" ]; then
-          pnpm eslint "{staged_files}" --max-warnings=0 --fix --cache --ignore-pattern "**/docs/**"
+          # CI環境ではdocsフォルダを除外してファイルリストを作成
+          files=$(echo "{staged_files}" | tr ' ' '\n' | grep -v "^docs/" | tr '\n' ' ')
+          if [ -n "$files" ]; then
+            pnpm eslint $files --max-warnings=0 --fix --cache
+          fi
         else
           pnpm eslint "{staged_files}" --max-warnings=0 --fix --cache
         fi
