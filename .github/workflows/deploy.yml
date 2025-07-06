@@ -17,29 +17,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       # node_modules がキャッシュされていれば展開する
       - name: Cache node modules
-        id: cache-npm
+        id: cache-pnpm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      # node_modules がキャッシュされてなければ npm ci
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: node
-        uses: actions/setup-node@v3
-
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: npm install
-        run: npm ci
+      # node_modules がキャッシュされてなければ pnpm install
+      - if: ${{ steps.cache-pnpm.outputs.cache-hit != 'true' }}
+        name: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: build
         run: |
-          npm run rebuild
+          pnpm run rebuild
         env:
           GITHUB_PAGES: true
 
