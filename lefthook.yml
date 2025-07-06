@@ -1,7 +1,7 @@
 pre-commit:
   piped: true
   skip:
-    - env: GITHUB_PAGES
+    - env: CI
   commands:
     prettier:
       priority: 1

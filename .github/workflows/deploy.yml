@@ -12,8 +12,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_PAGES: true
 
     steps:
       - name: Checkout repository
@@ -51,8 +49,6 @@ jobs:
 
       - name: Push to GitHub
         uses: EndBug/add-and-commit@main
-        env:
-          GITHUB_PAGES: true
         with:
           branch: main
           message: ":rocket: Update"
