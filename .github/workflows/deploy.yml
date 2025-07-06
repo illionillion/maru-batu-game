@@ -51,4 +51,4 @@ jobs:
         uses: EndBug/add-and-commit@main
         with:
           branch: main
-          message: ":rocket: Update"
+          message: "ci: :rocket: Update"
