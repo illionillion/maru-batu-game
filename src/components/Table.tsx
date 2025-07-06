@@ -1,7 +1,7 @@
-import type { FC} from '@yamada-ui/react';
-import { NativeTable, Tbody, Tr } from '@yamada-ui/react';
+import type { FC } from '@yamada-ui/react';
+import { NativeTable, Tbody } from '@yamada-ui/react';
 import { memo } from 'react';
-import { Cell } from './Cell';
+import { Row } from './Row';
 
 interface TableProps {
   cells: number[][];
@@ -21,11 +21,7 @@ export const Table: FC<TableProps> = memo(
       >
         <Tbody>
           {cells.map((r, i) => (
-            <Tr key={i}>
-              {r.map((c, j) => (
-                <Cell {...{ c, i, j, handleClick, key: j }} />
-              ))}
-            </Tr>
+            <Row {...{ r, i, handleClick }} key={i} />
           ))}
         </Tbody>
       </NativeTable>
